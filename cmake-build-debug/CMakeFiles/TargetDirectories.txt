@@ -1,0 +1,3 @@
+C:/Users/Sharif IA/Documents/GitHub/project-hosseinMsh/cmake-build-debug/CMakeFiles/project_hosseinMsh.dir
+C:/Users/Sharif IA/Documents/GitHub/project-hosseinMsh/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Sharif IA/Documents/GitHub/project-hosseinMsh/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,6 @@
+# ninja log v5
+2	122	6943890100998189	CMakeFiles/project_hosseinMsh.dir/edea.c.obj	bba01e0116403450
+123	255	6943890102273803	project_hosseinMsh.exe	27aad04a0d3c29f0
+28	680	6951196705101815	build.ninja	8b62da59a92d04df
+0	189	6951196708761725	CMakeFiles/project_hosseinMsh.dir/main.c.obj	77d00155cd1fcc41
+191	437	6951196711180651	project_hosseinMsh.exe	e45b53d1da69eb2c
