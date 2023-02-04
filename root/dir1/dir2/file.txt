@@ -1,0 +1,5 @@
+i'm hh
+hadkflpa od oks[ef
+this is mohsen
+find –str moh* –file /root/dir1/dir2/file.txt
+find –str mo* –file /root/dir1/dir2/file.txt
