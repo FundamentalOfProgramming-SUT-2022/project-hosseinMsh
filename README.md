@@ -1,4 +1,5 @@
 
 
 https://github.com/hosseinMsh/project_term1.git
-projam beham khor  inga zadam :(
+نتونستم این صفحه رو ریست کنم برا  همین تو صفحه بالا زدم پروژه رو :(
+
