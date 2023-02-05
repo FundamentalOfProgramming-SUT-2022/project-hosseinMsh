@@ -235,128 +235,128 @@ void Paste(char* address,const long long int* pos){
     fclose(paste);
 }
 ///find and find_object
-int str_finder(const char* full_str,const char* what_you_need_find) {
-    int find_pos = -1;
-    int j = 0;
-    int end_str = (int) strlen(what_you_need_find);
+int *str_finder(const char* full_str,const char* what_you_need_find) {
+    int *find_pos= calloc(20,sizeof (int));
+    int k = 1;
+    int size_str_need_find = (int) strlen(what_you_need_find) - 2;
+    int size_full_str = (int) strlen(full_str);
     ///*str
     if (what_you_need_find[0] == '*') {
-        for (int i = (int) strlen(full_str); i > 0; --i) {
-            if (full_str[i] == what_you_need_find[j]) {
-                j++;
-                if (what_you_need_find[j] == '*') {
-                    while (full_str[i] == ' ' || full_str[i] == '\n' || full_str[i] == '\0')
-                        i--;
-                    find_pos = i + 1;
+        int flag=0;
+        for (int i = size_full_str; i > 0; --i) {
+            for (int j = size_str_need_find; j > 0; --j) {
+                flag=1;
+                if(full_str[i+j]!= what_you_need_find[j]) {
+                    flag=0;
+                    break;
                 }
             }
+            if(flag==1){
+                for (int j = i; j > 0; --j) {
+                    if(full_str[j]=='\n' || full_str[j]==' ')
+                        break;
+                    find_pos[k]=j-size_str_need_find-2;
+                }
+                k++;
+            }
         }
+
     }
     ///str*
-    if (what_you_need_find[end_str-2] == '*') {
-        printf("%s",what_you_need_find);
-        for (int i = 0; i < strlen(full_str); ++i) {
-            if (full_str[i] == what_you_need_find[j]) {
-                j++;
-                if (what_you_need_find[j] == '*') {
-                    find_pos = i + 3 - (int) strlen(what_you_need_find);
+    if (what_you_need_find[size_str_need_find] == '*') {
+        int flag=0;
+        for (int i = 0; i < size_full_str; ++i) {
+            for (int j = 0; j < size_str_need_find; ++j) {
+                flag=1;
+                if(full_str[j+i]!= what_you_need_find[j]) {
+                    flag=0;
+                    break;
                 }
-              if(full_str[i+1] == what_you_need_find[j+1]){
-
-                    if (full_str[i] != what_you_need_find[j]) {
-                        j = 0;
-                        continue;
-                    }
-                }
+            }
+            if(flag==1){
+                find_pos[k]=i;
+                k++;
             }
         }
     }
-        ///str
+    ///str
 
     else {
-        j = 0;
-        for (int i = 0; i < strlen(full_str); ++i) {
-            if (full_str[i] == what_you_need_find[j]) {
-                j++;
-                if (what_you_need_find[j] == '\0') {
-                    find_pos = i + 1 - (int) strlen(what_you_need_find);
+        int flag=0;
+        for (int i = 0; i < size_full_str; ++i) {
+            for (int j = 0; j < size_str_need_find; ++j) {
+                flag=1;
+                if(full_str[j+i]!= what_you_need_find[j]) {
+                    flag=0;
+                    break;
                 }
+            }
+            if(flag==1){
+                find_pos[k]=i;
+                k++;
             }
         }
     }
+    find_pos[0]=k-1;
     return find_pos;
 }
 void Find(char* str,char* address){
     check_file_exist(address);
     char* str_all_file= readFile(address);
-    int pos_str_looking= str_finder(str_all_file,str);
-    printf("%d\n",pos_str_looking);
+    int *pos_str_looking= str_finder(str_all_file,str);
+    printf("%d\n",pos_str_looking[1]);
 }
 int Find_count(char* str,char* address){
-    char* full_str= readFile(address);
-    int num_find=0;
-    int j=0;
-    int end_str= (int) strlen(str);
-    ///*str
-    if(str[0]=='*') {
-        for (int i = (int) strlen(full_str); i > 0; --i) {
-            if (full_str[i] == str[j]) {
-                j++;
-                if (str[j] == '*') {
-                    while (full_str[i] == ' ' || full_str[i] == '\n' || full_str[i] == '\0')
-                        i--;
-                    num_find ++;
-                    continue;
-                }
-            }
-        }
-    }
-    ///str*
-    if(str[end_str]=='*'){
-        for (int i = 0; i < strlen(full_str); ++i) {
-            if (full_str[i] == str[j]) {
-                j++;
-                if (str[j] == '*') {
-//                    while (full_str[i]==' ' ||full_str[i]=='\n'||full_str[i]=='\0')
-//                        i++;
-                    num_find++;
-                    continue;
-                }
-            }
-        }
-    }
-        ///str
-    else {
-        for (int i = 0; i < strlen(full_str); ++i) {
-            if (full_str[i] == str[j]) {
-                j++;
-                if (str[j] == '\0') {
-                    num_find ++;
-                    continue;
-                }
-            }
-        }
-    }
-    return num_find;
+    check_file_exist(address);
+    char*full_str= readFile(address);
+    int *pos_looking= str_finder(full_str,str);
+    return pos_looking[0];
 }
-void Find_at(char* str,char* address, int at){}
+int Find_at(char* str,char* address, int at){
+    check_file_exist(address);
+    char* str_all_file= readFile(address);
+    int *pos_str_looking= str_finder(str_all_file,str);
+    if(at>pos_str_looking[0]){
+        ANSI_COLOR_RED;
+        printf("at num not existed");
+        ANSI_COLOR_RESET;
+        return -1;
+    }
+    return pos_str_looking[at];
+}
 void Find_byword(char* str,char* address){}
-void Find_all(char* str,char* address){}
+char* Find_all(char* str,char* address){
+    check_file_exist(address);
+    char*full_str= readFile(address);
+    int *pos_looking= str_finder(full_str,str);
+    char* all= calloc(30,sizeof (char));
+    int j=0;
+    for (int i = 1; i <= pos_looking[0]; ++i) {
+        printf("%d,",pos_looking[i]);
+        all[j]=pos_looking[i];
+        j++;
+        all[j]=',';
+        j++;
+    }
+    printf("\n");
+    all[j-1]='\0';
+    return all;
+}
 ///replace and replace_object
 void Replace(char* str1,char*str2,char*address) {
     int exist=check_file_exist(address);
     if(exist==0)
         return;
     char *all_file = readFile(address);
-    int num_pos_start_str1 = str_finder(all_file, str1);
+    int *num_pos_start_str1 = str_finder(all_file, str1);
     int num_pos_end_str1;
-    for (int i = num_pos_start_str1; i < (int) strlen(all_file); ++i) {
+    for (int i = num_pos_start_str1[1]; i < (int) strlen(all_file); ++i) {
         if (all_file[i] == ' ' || all_file[i] == EOF || all_file[i] == '\n')
             num_pos_end_str1 = i;
     }
     char*brack= calloc(strlen(all_file)+ strlen(str2),sizeof (char ));
     int j=0;
-    for (int i = 0; i < num_pos_start_str1; ++i) {
+    for (int i = 0; i < num_pos_start_str1[1]; ++i) {
         brack[j]=all_file[i];
         j++;
     }
@@ -373,7 +373,7 @@ void Replace(char* str1,char*str2,char*address) {
         j++;
     }
     brack[j]='\0';
-    FILE *replace=fopen(address,"rw");
+    FILE *replace=fopen(address,"w");
     fprintf(replace,"%s",brack);
     fclose(replace);
 }
@@ -384,9 +384,9 @@ void Grep(char* str,char *address){
     if(check_file_exist(address)==0)
         return;
     char* str_file= readFile(address);
-    int loc=str_finder(str_file,str);
+    int *loc=str_finder(str_file,str);
     printf("%s%s",address,"-->");
-    for (int i = loc; i < strlen(str_file); ++i) {
+    for (int i = loc[1]; i < strlen(str_file); ++i) {
         if(str_file[i]=='\n')
             break;
         printf("%c",str_file[i]);
