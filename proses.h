@@ -151,22 +151,23 @@ void proses(char* order) {
                 if(getchar()=='\n'){
                     Find(str,address);
                 }
-                else{
-                    type=get_type();
-                    if(strcmp(type,"-count")==0){
-                        Find_count(str,address);
+                else {
+                    type = get_type();
+                    if (strcmp(type, "-count") == 0) {
+                        printf("%d\n", Find_count(str, address));
                     }
-                    if(strcmp(type,"-at")==0){
+                    else if (strcmp(type, "-at") == 0) {
                         int at;
-                        scanf_s("%d",&at);
-                        Find_at(str,address,at);
+                        scanf_s("%d", &at);
+                        printf("%d\n",Find_at(str, address, at));
                     }
-                    if(strcmp(type,"-byword")==0){
-                        Find_byword(str,address);
+                    else if (strcmp(type, "-byword") == 0) {
+                        Find_byword(str, address);//kod khar an gam mide lazem nist
                     }
-                    if(strcmp(type,"-all")==0){
-                        Find_all(str,address);
-                    } else
+                    else if (strcmp(type, "-all") == 0) {
+                      Find_all(str, address);
+                    }
+                    else
                         error(600);
                 }
             } else
@@ -177,10 +178,10 @@ void proses(char* order) {
         ///replace
     else if(strcmp(order,replace)==0) {
         char *type = get_type();
-        if (strcmp(type, "-str") == 0) {
+        if (strcmp(type, "-str1") == 0) {
             char *str1 = get_str();
             type = get_type();
-            if (strcmp(type, "-str") == 0) {
+            if (strcmp(type, "-str2") == 0) {
                 char *str2 = get_str();
                 type = get_type();
                 if (strcmp(type, "-file") == 0) {
