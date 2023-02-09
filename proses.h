@@ -149,7 +149,9 @@ void proses(char* order) {
             if(strcmp(type,"-file")==0){
                 char* address=get_Address();
                 if(getchar()=='\n'){
-                    Find(str,address);
+//                    Find(str,address);
+                    int at=1;
+                    printf("%d\n",Find_at(str, address, at));
                 }
                 else {
                     type = get_type();
@@ -162,7 +164,7 @@ void proses(char* order) {
                         printf("%d\n",Find_at(str, address, at));
                     }
                     else if (strcmp(type, "-byword") == 0) {
-                        Find_byword(str, address);//kod khar an gam mide lazem nist
+                        printf("%d\n",Find_byword(str, address));//kod khar an gam mide lazem nist
                     }
                     else if (strcmp(type, "-all") == 0) {
                       Find_all(str, address);
@@ -186,8 +188,12 @@ void proses(char* order) {
                 type = get_type();
                 if (strcmp(type, "-file") == 0) {
                     char *address = get_Address();
+                    if(0 ==check_file_exist(address))
+                        return;
                     if (getchar() == '\n') {
-                        Replace(str1, str2, address);
+                        FILE *fl= fopen(address,"w");
+                        printf("%s",Replace(str1, str2, address));
+                        fclose(fl);
                     } else {
                         type = get_type();
                         if (strcmp(type, "-at") == 0) {
