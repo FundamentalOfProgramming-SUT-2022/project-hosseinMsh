@@ -199,7 +199,7 @@ void Copy(char* address,const long long int* pos,int size,const char* flag) {
     int pos_add = pos_address(all_str_in_file, pos);
     if (pos_add == -1) {
         ANSI_COLOR_RED;
-        printf("pos address is wrong");
+        printf("pos address is wrong\n");
         ANSI_COLOR_RESET;
         return;
     }
@@ -324,7 +324,16 @@ int Find_at(char* str,char* address, int at){
     }
     return pos_str_looking[at];
 }
-void Find_byword(char* str,char* address){}
+int Find_byword(char* str,char* address){
+    char* string = readFile(address);
+    int num=1;
+    int pos= Find_at(str,address,1);
+    for (int i = 0; i < pos; ++i) {
+        if(string[i]==' ')
+            num++;
+    }
+    return num;
+}
 char* Find_all(char* str,char* address){
     check_file_exist(address);
     char*full_str= readFile(address);
@@ -343,39 +352,26 @@ char* Find_all(char* str,char* address){
     return all;
 }
 ///replace and replace_object
-void Replace(char* str1,char*str2,char*address) {
-    int exist=check_file_exist(address);
-    if(exist==0)
-        return;
-    char *all_file = readFile(address);
-    int *num_pos_start_str1 = str_finder(all_file, str1);
-    int num_pos_end_str1;
-    for (int i = num_pos_start_str1[1]; i < (int) strlen(all_file); ++i) {
-        if (all_file[i] == ' ' || all_file[i] == EOF || all_file[i] == '\n')
-            num_pos_end_str1 = i;
-    }
-    char*brack= calloc(strlen(all_file)+ strlen(str2),sizeof (char ));
+char* Replace(char* str1,char*str2,char*address) {
+    int pos=Find_at(str1,address,1);
+    char *file_str= readFile(address);
+    char *new_str= calloc(SIZE_OF_STR,sizeof (char));
     int j=0;
-    for (int i = 0; i < num_pos_start_str1[1]; ++i) {
-        brack[j]=all_file[i];
+    for (int i = 0; i < pos; ++i) {
+        new_str[j]=file_str[i];
         j++;
     }
     for (int i = 0; i < strlen(str2); ++i) {
-        if(str2[i]=='\0')
-            break;
-        brack[j]=str2[i];
+        new_str[j]= str2[i];
         j++;
     }
-    for (int i = num_pos_end_str1; i < strlen(all_file); ++i) {
-        if(str2[i]=='\0')
-            break;
-        brack[j]=all_file[i];
+    for (int i = pos+ (int)strlen(str1)-1; i < strlen(file_str); ++i) {
+        new_str[j]= file_str[i];
         j++;
     }
-    brack[j]='\0';
-    FILE *replace=fopen(address,"w");
-    fprintf(replace,"%s",brack);
-    fclose(replace);
+    new_str[j]='\0';
+    printf("%s",new_str);
+    return new_str;
 }
 void Replace_at(char* str1,char*str2,char*address,int at){}
 void Replace_all(char* str1,char*str2,char*address){}
